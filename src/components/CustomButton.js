@@ -3,9 +3,8 @@ import { Button } from 'react-native'
 
 
 export const CustomButton = props => {
-    const {title,onPress} = props;
-
     
+    const {title,onPress} = props;
 
 return(
     <Button
