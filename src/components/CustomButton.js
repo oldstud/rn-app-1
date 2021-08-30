@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-native'
+import { Button,StyleSheet } from 'react-native'
 
 
 export const CustomButton = props => {
@@ -10,6 +10,14 @@ return(
     <Button
     title={title}
     onPress = {onPress}
+    style={styles.btnContainer}
     />
 )
 }
+
+const styles = StyleSheet.create({
+    btnContainer: {
+      marginTop: 40,
+    },
+
+  });

@@ -26,25 +26,28 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { TimeTracking } from './src/pages/TimeTracking';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import { TimeTracking } from './src/screens/TimeTracking';
+import { Home } from './src/screens/Home'
 
 
+const Stack = createNativeStackNavigator();
 
 const App: () => Node = () => {
 
 
   return (
-    <View style={styles.sectionContainer}>
-    <TimeTracking/>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={Home} option={{title:'After Login Page'}} />
+     <Stack.Screen name="Time Tracking" component={TimeTracking} />
+
+    </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-});
 
 export default App;

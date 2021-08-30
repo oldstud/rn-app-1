@@ -1,22 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { TextInput, StyleSheet, View } from 'react-native'
 
 export const CustomInput = props => {
-    const { placeholder,changeField,nameInState } = props;
 
+    const { placeholder,changeField,nameInState,clearData } = props;
     const [inputData,setInputData] = useState('');
-    
+
     const changeText = (text) => {
         setInputData(text);
-        changeField(nameInState,inputData)
         
     }
+
+    useEffect(() => {
+        changeField(nameInState,inputData)
+    }, [inputData])
+
+    useEffect(() => {
+        setInputData('');
+      
+      }, [clearData])
+
 return(
     <View>
     <TextInput style={ styles.input }
         placeholder={ placeholder }
         value={ inputData }
-        onChangeText={changeText}
+        onChangeText={ changeText }
+
         />  
     </View>
 )
