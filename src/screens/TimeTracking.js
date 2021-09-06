@@ -1,15 +1,16 @@
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 import { Text, View ,StyleSheet} from 'react-native';
 import { CustomButton } from '../components/CustomButton';
-import { CustomInput } from '../components/CustomTextInput';
+import { CustomTextInput } from '../components/CustomTextInput';
 import { List } from '../components/List';
+import { AuthContext } from '../context';
 
 export const TimeTracking = () => {
     const initialTodosItem = {};
     const [todosItem, setTodosItem] = useState(initialTodosItem);
     const [clearData,setClearData] = useState(false);
     const [state,setState] = useState([]);
-
+    const {isLoggin,setIsLoggin} = useContext(AuthContext)
     const transferData = (name,data) => {
        setTodosItem({
            ...todosItem,
@@ -22,7 +23,7 @@ export const TimeTracking = () => {
     const handlePress = () => {
         setState([...state,todosItem]);
         clearTodosHandler();
-        console.log(state);
+        console.log(isLoggin);
         
     }
 
@@ -33,19 +34,19 @@ export const TimeTracking = () => {
 
     return(
         <View style={styles.sectionContainer}>
+            
             <View>
             <Text>What are you doing?</Text>
-            <CustomInput
+            <CustomTextInput
             placeholder="Research documentation...."
             changeField = {transferData}
             nameInState="body"
             clearData={clearData}
-            
             />
             </View>
             <View>
             <Text>How much time did you spend?</Text>  
-            <CustomInput
+            <CustomTextInput
             placeholder="01:30 or 00:40..."
             changeField = {transferData}
             nameInState="time"
@@ -56,7 +57,6 @@ export const TimeTracking = () => {
             title="Add to list"
             onPress={handlePress}
             />
-
             <List 
             state={state}
             ></List>

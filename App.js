@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React,{useState} from 'react';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -27,25 +27,38 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { TimeTracking } from './src/screens/TimeTracking';
 import { Home } from './src/screens/Home'
+import { AuthContext } from './src/context';
+import { Auth } from './src/screens/Auth';
+import { PhotoPlace } from './src/screens/PhotoPlace';
 
 
-const Stack = createNativeStackNavigator();
+
 
 const App: () => Node = () => {
 
+  const [isLoggin, setIsLoggin] = useState(false);
+
+  const Tab = createBottomTabNavigator();
 
   return (
+    <AuthContext.Provider value={{isLoggin,setIsLoggin}}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home} option={{title:'After Login Page'}} />
-     <Stack.Screen name="Time Tracking" component={TimeTracking} />
-
-    </Stack.Navigator>
+        {isLoggin ? (
+      <Tab.Navigator initialRouteName="Home">
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Time Tracking" component={TimeTracking} />
+        <Tab.Screen name="Time for Photo" component={PhotoPlace} />
+      </Tab.Navigator>
+        ):(
+          <Auth/>
+        )
+        }
     </NavigationContainer>
+    </AuthContext.Provider>
   );
 };
 

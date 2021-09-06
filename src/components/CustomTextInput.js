@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import { TextInput, StyleSheet, View } from 'react-native'
 
-export const CustomInput = props => {
+export const CustomTextInput = props => {
 
     const { placeholder,changeField,nameInState,clearData } = props;
     const [inputData,setInputData] = useState('');
@@ -20,7 +20,7 @@ export const CustomInput = props => {
       
       }, [clearData])
 
-return(
+return (
     <View>
     <TextInput style={ styles.input }
         placeholder={ placeholder }
