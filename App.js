@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React,{useState} from 'react';
+import React,{useState,useContext,useEffect} from 'react';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -31,34 +31,36 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { TimeTracking } from './src/screens/TimeTracking';
 import { Home } from './src/screens/Home'
-import { AuthContext } from './src/context';
+
 import { Auth } from './src/screens/Auth';
 import { PhotoPlace } from './src/screens/PhotoPlace';
 
+import { useSelector,useStore,ReactReduxContext  } from 'react-redux';
 
 
 
 const App: () => Node = () => {
 
-  const [isLoggin, setIsLoggin] = useState(false);
-
-  const Tab = createBottomTabNavigator();
+  let isLogginLocale = useSelector(state=> state.reducer.reducerAuth.isLoggin);
+ 
+    const Tab = createBottomTabNavigator();
 
   return (
-    <AuthContext.Provider value={{isLoggin,setIsLoggin}}>
-    <NavigationContainer>
-        {isLoggin ? (
-      <Tab.Navigator initialRouteName="Home">
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Time Tracking" component={TimeTracking} />
-        <Tab.Screen name="Time for Photo" component={PhotoPlace} />
-      </Tab.Navigator>
-        ):(
-          <Auth/>
-        )
-        }
-    </NavigationContainer>
-    </AuthContext.Provider>
+    
+      <NavigationContainer>
+          {isLogginLocale ? (
+        <Tab.Navigator initialRouteName="Home">
+          <Tab.Screen name="Home" component={Home} />
+          <Tab.Screen name="Time Tracking" component={TimeTracking} />
+          <Tab.Screen name="Time for Photo" component={PhotoPlace} />
+        </Tab.Navigator>
+          ):(
+            <Auth/>
+          )
+          }
+      </NavigationContainer>
+
+
   );
 };
 

@@ -1,31 +1,29 @@
-import React, { useState,useEffect,useContext } from 'react'
+import React, { useState,useEffect,useCallback,useContext } from 'react'
 import { TextInput, StyleSheet, View, Button } from 'react-native'
 
+import { useSelector,useDispatch,useStore,ReactReduxContext } from 'react-redux';
+import { LoginFirebase } from '../redux-store/AuthReducer/operations';
 
-import auth from '@react-native-firebase/auth';
-import { AuthContext } from '../context';
+// import auth from '@react-native-firebase/auth';
+
 
 
 export const LogInScreen = () => {
-    const {isLoggin,setIsLoggin} = useContext(AuthContext);
-
+   
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const dispatch = useDispatch();
 
-    const submitHandler = () => {
-        auth()
-        .signInWithEmailAndPassword(email, password)
-        .catch(error=>{
-      let errorCode = error.code;
-      let errorMessage = error.message;
-      if (errorCode === 'auth/wrong-password') {
-        alert('Wrong password.');
-      } else {
-        alert(errorMessage);
-      }
-      console.log(error);
-    });
-    }
+    const submitHandler =  () => {
+      dispatch(LoginFirebase(email,password));
+    };
+      
+
+  const info = useSelector(state=>state.reducer.reducerAuth);
+
+  const infoHandler = () => {
+    console.log(info);
+  }
         
     return (   
        
@@ -43,6 +41,11 @@ export const LogInScreen = () => {
        <Button
        onPress = {submitHandler}
        title='Login'
+       ></Button>
+
+       <Button
+       onPress = {infoHandler}
+       title='info'
        ></Button>
       
        

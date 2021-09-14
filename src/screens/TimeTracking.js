@@ -1,16 +1,16 @@
-import React,{useState,useContext} from 'react';
+import React,{useState} from 'react';
 import { Text, View ,StyleSheet} from 'react-native';
 import { CustomButton } from '../components/CustomButton';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { List } from '../components/List';
-import { AuthContext } from '../context';
+
 
 export const TimeTracking = () => {
     const initialTodosItem = {};
     const [todosItem, setTodosItem] = useState(initialTodosItem);
     const [clearData,setClearData] = useState(false);
     const [state,setState] = useState([]);
-    const {isLoggin,setIsLoggin} = useContext(AuthContext)
+  
     const transferData = (name,data) => {
        setTodosItem({
            ...todosItem,
@@ -23,7 +23,7 @@ export const TimeTracking = () => {
     const handlePress = () => {
         setState([...state,todosItem]);
         clearTodosHandler();
-        console.log(isLoggin);
+     
         
     }
 
