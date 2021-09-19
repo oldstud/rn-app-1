@@ -3,6 +3,7 @@ import { TextInput, StyleSheet, View, Button,Alert,Text } from 'react-native'
 
 import { useSelector,useDispatch,useStore,ReactReduxContext } from 'react-redux';
 import { LoginFirebase } from '../redux-store/AuthReducer/operations';
+import {loginSuccess} from '../redux-store/AuthReducer/actions'
 
 import { useForm, Controller } from 'react-hook-form';
 
@@ -89,6 +90,13 @@ export const LogInScreen = () => {
       <Button title="Submit"
        onPress={handleSubmit(onSubmit)}
        />
+
+       
+      <Button title="Hack"
+       onPress={dispatch(loginSuccess(true))}
+       />
+
+
        <Text>{errorText}</Text>
     </View>
     )

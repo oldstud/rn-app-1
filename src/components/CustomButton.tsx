@@ -2,7 +2,7 @@ import React from 'react'
 import { Button,StyleSheet } from 'react-native'
 
 
-export const CustomButton = props => {
+export const CustomButton = (props: any) => {
     
     const {title,onPress} = props;
 
@@ -10,7 +10,7 @@ return(
     <Button
     title={title}
     onPress = {onPress}
-    style={styles.btnContainer}
+    // style = {styles.btnContainer}
     />
 )
 }

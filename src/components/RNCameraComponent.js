@@ -16,7 +16,10 @@ const PendingView = () => (
   </View>
 );
 
-export class ExampleApp extends PureComponent {
+export class RNCameraComponent extends PureComponent {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -41,7 +44,7 @@ export class ExampleApp extends PureComponent {
             if (status !== 'READY') return <PendingView />;
             return (
               <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={() => this.takePicture(camera)} style={styles.capture}>
+                <TouchableOpacity onPress={() => this.takePicture(camera,this.props)} style={styles.capture}>
                   <Text style={{ fontSize: 14 }}> SNAP </Text>
                 </TouchableOpacity>
               </View>
@@ -52,11 +55,12 @@ export class ExampleApp extends PureComponent {
     );
   }
 
-  takePicture = async function(camera) {
+  takePicture = async function(camera,props) {
     const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
-    //  eslint-disable-next-line
-    console.log(data.uri);
+   
+    this.props.onpicture(data)
+    
   };
 }
 
@@ -83,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('App', () => ExampleApp);
+AppRegistry.registerComponent('App', () => RNCameraComponent);
