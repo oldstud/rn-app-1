@@ -12,16 +12,20 @@ export const LoginFirebase = (email,password) => async dispatch =>{
         dispatch(loginSuccess(true));
           console.log('welcome')
         })
+        .catch((error)=>{
+          dispatch(loginError(error.code))
+          console.log(error.code)
+        })
     
     }
     catch(error){
-        dispatch(loginError(error));
-        console.log('error')
+      // console.log(error.code)
+      
     }
 }
 
 
-export const RegistrationFirebase = (email,password) =>async dispatch=> {
+export const RegistrationFirebase = (email,password) => async dispatch => {
     dispatch(loginRequest());
 try{
     auth()

@@ -1,56 +1,103 @@
 import React, { useState,useEffect,useCallback,useContext } from 'react'
-import { TextInput, StyleSheet, View, Button } from 'react-native'
+import { TextInput, StyleSheet, View, Button,Alert,Text } from 'react-native'
 
 import { useSelector,useDispatch,useStore,ReactReduxContext } from 'react-redux';
 import { LoginFirebase } from '../redux-store/AuthReducer/operations';
 
-// import auth from '@react-native-firebase/auth';
+import { useForm, Controller } from 'react-hook-form';
 
 
 
 export const LogInScreen = () => {
+  const { control, handleSubmit, formState: { errors } } = useForm();
+  const errorMessage = useSelector(state => state.reducer.error);
+  const [errorPass, useErrorPass] = useState(false);
+  const [errorEmail, useErrorEmail] = useState(false);
+  const [errorText, useErrorText] = useState("");
+
+
+  useEffect(() => {
+    switch (errorMessage) {
+      case "auth/wrong-password":
+        useErrorPass(true)
+        break;
+      case "auth/invalid-email":
+        useErrorEmail(true)
+        break;
+      case "auth/user-not-found":
+        useErrorText('User not found')
+        break;
+      default:
+        break;
+    }
+
+  }, [errorMessage])
    
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
     const dispatch = useDispatch();
-
-    const submitHandler =  () => {
-      dispatch(LoginFirebase(email,password));
-    };
-      
-
-  const info = useSelector(state=>state.reducer.reducerAuth);
-
-  const infoHandler = () => {
-    console.log(info);
+    const onSubmit = (data)=>{
+      useErrorPass(false)
+      useErrorEmail(false)
+      useErrorText(false)
+      dispatch(LoginFirebase(data.email,data.password));
+    
   }
         
     return (   
-       
-    <View>
-     <TextInput
-       placeholder='email'
-       value={email}
-       onChangeText={(text)=>setEmail(text)}
-       />
-       <TextInput
-       placeholder='password'
-       value={password}
-       onChangeText={(text)=>setPassword(text)}
-       />
-       <Button
-       onPress = {submitHandler}
-       title='Login'
-       ></Button>
-
-       <Button
-       onPress = {infoHandler}
-       title='info'
-       ></Button>
-      
-       
-    </View>
+      <View>
+      <Controller
+        control={control}
+        rules={{
+         required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={errorEmail ? styles.error : false}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            placeholder='email'
+          />
+        )}
+        name="email"
+        defaultValue=""
         
-    )
+      />
+      {errors.email && <Text>This is required.</Text>}
 
+      <Controller
+        control={control}
+        rules={{
+        required: true,
+         maxLength: 100,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={errorPass ? styles.error : false}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            placeholder='password'
+          />
+        )}
+
+        name="password"
+        defaultValue=""
+        
+      />
+      {errors.password && <Text>This is required.</Text>}
+
+      <Button title="Submit"
+       onPress={handleSubmit(onSubmit)}
+       />
+       <Text>{errorText}</Text>
+    </View>
+    )
 }
+
+const styles = StyleSheet.create({
+  error: {
+    borderWidth: 2,
+    borderColor: "#FF0000",
+    borderRadius: 2
+  },
+});
